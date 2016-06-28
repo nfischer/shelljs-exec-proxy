@@ -1,13 +1,12 @@
 # ShellJS Exec Proxy
 
-Unleash the power of limitless ShellJS commands... with ES6 Proxies!
+Unleash the power of limitless ShellJS commands... *with ES6 Proxies!*
 
 Do you like [ShellJS](https://github.com/shelljs/shelljs), but wish it had your
 favorite commands? Skip the weird `exec()` calls using `shelljs-exec-proxy`:
 
 ```javascript
-// We want to run this git command:
-// $ git commit -am "I'm updating the \"foo\" module to be more secure"
+// Want to run the shell command `$ git commit -am "I'm updating the \"foo\" module to be more secure"`?
 // Standard ShellJS requires the exec function, with confusing string escaping:
 shell.exec('git commit -am "I\'m updating the \\"foo\\" module to be more secure"');
 // Skip the extra string escaping with shelljs-exec-proxy!
@@ -23,9 +22,7 @@ Proxies!)
 $ npm install --save shelljs-exec-proxy
 ```
 
-## Convenience
-
-Get that JavaScript feel, back in your code:
+## Get that JavaScript feeling back in your code
 
 ```javascript
 shell.git.status();
@@ -61,8 +58,8 @@ shell.ls('dir/*.txt').forEach(file => {
 }
 ```
 
-| Example file name | Vulnerability fix |
-|------------------ | ----------------- |
+| Example file name | Security fix |
+|------------------ | ------------ |
 | `File 1.txt` | Filenames are automatically quoted, so spaces aren't an issue |
 | `foo;rm -rf *` | Only one command runs at a time (semicolons are treated literally) and wildcards aren't expanded |
 | `ThisHas"quotes'.txt` | Quote characters are automatically escaped for you, so there are never any issues |
