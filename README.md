@@ -36,7 +36,7 @@ shell.git.push('origin', 'master');
 
 ## Security improvements
 
-ShellJS v0.7 is vulnerable to command injection, wild cards, and string
+ShellJS v0.7 is vulnerable to command injection, wildcards, and string
 escaping mistakes. Here's an insecure code snippet:
 
 ```javascript
@@ -49,11 +49,11 @@ This leaves you vulnerable to files like:
 
 | Example file name | Vulnerability |
 |------------------ | ------------- |
-| `File 1.txt` | this tries to add both `File` and `1.txt`, instead of just `File 1.txt` |
+| `File 1.txt` | This tries to add both `File` and `1.txt`, instead of `File 1.txt` |
 | `foo;rm -rf *` | This executes both `git add foo` and `rm -rf *`, unexpectedly deleting your files! |
 | `ThisHas"quotes'.txt` | This tries running `git add ThisHas"quotes'.txt` producing a Bash syntax error |
 
-`shelljs-exec-proxy` solves this:
+`shelljs-exec-proxy` solves all these problems:
 
 ```javascript
 shell.ls('dir/*.txt').forEach(file => {
@@ -64,5 +64,5 @@ shell.ls('dir/*.txt').forEach(file => {
 | Example file name | Vulnerability fix |
 |------------------ | ----------------- |
 | `File 1.txt` | Filenames are automatically quoted, so spaces aren't an issue |
-| `foo;rm -rf *` | Only one command runs at a time (semicolons are treated literally) and wild cards aren't expanded |
-| `ThisHas"quotes'.txt` | Quotes are automatically escaped, so there are never any issues |
+| `foo;rm -rf *` | Only one command runs at a time (semicolons are treated literally) and wildcards aren't expanded |
+| `ThisHas"quotes'.txt` | Quote characters are automatically escaped for you, so there are never any issues |
