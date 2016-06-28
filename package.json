@@ -30,7 +30,8 @@
     "shelljs": "^0.7.0"
   },
   "files": [
-    "index.js"
+    "index.js",
+    "common.js"
   ],
   "devDependencies": {
     "eslint": "^2.13.0",
