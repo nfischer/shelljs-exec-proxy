@@ -3,7 +3,7 @@
 Unleash the power of limitless ShellJS commands... *with ES6 Proxies!*
 
 Do you like [ShellJS](https://github.com/shelljs/shelljs), but wish it had your
-favorite commands? Skip the weird `exec()` calls using `shelljs-exec-proxy`:
+favorite commands? Skip the weird `exec()` calls by using `shelljs-exec-proxy`:
 
 ```javascript
 // Want to run the shell command `$ git commit -am "I'm updating the \"foo\" module to be more secure"`?
