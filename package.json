@@ -15,7 +15,9 @@
   "keywords": [
     "shelljs",
     "exec",
-    "proxy"
+    "proxy",
+    "es6",
+    "git"
   ],
   "author": "Nate Fischer <ntfschr@gmail.com> (https://github.com/nfischer)",
   "license": "MIT",
