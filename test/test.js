@@ -14,14 +14,16 @@ function assertShellStringEqual(a, b) {
 
 // returns true if on Unix
 function unix() {
-  return (process.platform === 'linux' || process.platfrom === 'darwin');
+  return process.platform !== 'win32';
 }
 
 describe('proxy', () => {
+  let delVarName;
   before(() => {
     // Configure shell variables so that we can use basic commands for testing
     // without using the ShellJS builtin
     shell.env.del = unix() ? 'rm' : 'del';
+    delVarName = unix() ? '$del' : '%del%';
     shell.env.output = 'echo';
     shell.config.silent = true;
   });
@@ -188,7 +190,7 @@ describe('proxy', () => {
     it('handles ShellStrings as arguments', () => {
       shell.touch('file.txt');
       fs.existsSync('file.txt').should.equal(true);
-      (unix() ? shell.$del : shell['%del'])(shell.ShellString('file.txt'));
+      shell[delVarName](shell.ShellString('file.txt'));
       fs.existsSync('file.txt').should.equal(false);
     });
   });
@@ -228,7 +230,7 @@ describe('proxy', () => {
       shell.exec('echo hello world').to(fb);
       shell.exec('echo hello world').to(fname);
 
-      (unix() ? shell.$del : shell['%del'])(fname);
+      shell[delVarName](fname);
       fs.existsSync(fname).should.equal(false);
       shell.cat(fa).toString().should.equal('hello world\n');
 
@@ -243,7 +245,7 @@ describe('proxy', () => {
       shell.exec('echo hello world').to(fa);
       shell.exec('echo hello world').to(fglob);
 
-      (unix() ? shell.$del : shell['%del'])(fglob);
+      shell[delVarName](fglob);
       fs.existsSync(fglob).should.equal(false);
       shell.cat(fa).toString().should.equal('hello world\n');
 
@@ -255,7 +257,7 @@ describe('proxy', () => {
       const fquote = 'thisHas"Quotes.txt';
       shell.exec('echo hello world').to(fquote);
       fs.existsSync(fquote).should.equal(true);
-      (unix() ? shell.$del : shell['%del'])(fquote);
+      shell[delVarName](fquote);
       fs.existsSync(fquote).should.equal(false);
     });
   });
