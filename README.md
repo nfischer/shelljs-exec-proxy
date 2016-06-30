@@ -1,6 +1,9 @@
 # ShellJS Exec Proxy
 
-Unleash the power of limitless ShellJS commands... *with ES6 Proxies!*
+[![Travis](https://img.shields.io/travis/nfischer/shelljs-exec-proxy.svg?maxAge=2592000)](https://travis-ci.org/nfischer/shelljs-exec-proxy)
+[![npm (scoped)](https://img.shields.io/npm/v/shelljs-exec-proxy.svg?maxAge=2592000)](https://www.npmjs.com/package/shelljs-exec-proxy)
+
+Unleash the power of unlimited ShellJS commands... *with ES6 Proxies!*
 
 Do you like [ShellJS](https://github.com/shelljs/shelljs), but wish it had your
 favorite commands? Skip the weird `exec()` calls by using `shelljs-exec-proxy`:
