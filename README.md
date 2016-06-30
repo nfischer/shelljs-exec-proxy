@@ -1,6 +1,7 @@
 # ShellJS Exec Proxy
 
 [![Travis](https://img.shields.io/travis/nfischer/shelljs-exec-proxy.svg?maxAge=2592000&style=flat-square)](https://travis-ci.org/nfischer/shelljs-exec-proxy)
+[![Codecov](https://img.shields.io/codecov/c/github/nfischer/shelljs-exec-proxy/master.svg?maxAge=2592000&style=flat-square)](https://codecov.io/gh/nfischer/shelljs-exec-proxy)
 [![npm (scoped)](https://img.shields.io/npm/v/shelljs-exec-proxy.svg?maxAge=2592000&style=flat-square)](https://www.npmjs.com/package/shelljs-exec-proxy)
 
 Unleash the power of unlimited ShellJS commands... *with ES6 Proxies!*
