@@ -169,7 +169,7 @@ describe('proxy', () => {
       }
     });
 
-    it('runs printf', () => {
+    it('runs printf', (done) => {
       if (shell.which('printf')) {
         const ret1 = shell.printf('first second third').to('file1.txt');
         shell.cat('file1.txt').toString().should.equal('first second third');
@@ -179,30 +179,34 @@ describe('proxy', () => {
       } else {
         console.log('skipping test');
       }
+      done();
     });
 
-    it('runs garbage commands', () => {
+    it('runs garbage commands', (done) => {
       const randCmd = 'alsdkfjlaskdfjlaskjdffksjdf';
       assert.ok(!shell.which(randCmd)); // don't run anything real!
       shell[randCmd]().code.should.not.equal(0);
+      done();
     });
 
-    it('handles ShellStrings as arguments', () => {
+    it('handles ShellStrings as arguments', (done) => {
       shell.touch('file.txt');
       fs.existsSync('file.txt').should.equal(true);
       shell[delVarName](shell.ShellString('file.txt'));
       fs.existsSync('file.txt').should.equal(false);
+      done();
     });
   });
 
   describe('subcommands', () => {
-    it('can use subcommands', () => {
+    it('can use subcommands', (done) => {
       const ret = shell.git.status();
       ret.code.should.equal(0);
       ret.stderr.should.equal('');
+      done();
     });
 
-    it('can use subcommands with options', () => {
+    it('can use subcommands with options', (done) => {
       fs.existsSync('package.json').should.equal(true);
 
       // dont' actually remove this file, but do a dry run
@@ -210,19 +214,21 @@ describe('proxy', () => {
       ret.code.should.equal(0);
       ret.stdout.should.equal('');
       ret.stderr.should.equal('');
+      done();
     });
 
-    it('runs very long subcommand chains', () => {
+    it('runs very long subcommand chains', (done) => {
       const fun = (unix() ? shell.$output : shell['%output']);
       const ret = fun.one.two.three.four.five.six('seven');
       ret.stdout.should.equal('one two three four five six seven\n');
       ret.stderr.should.equal('');
       ret.code.should.equal(0);
+      done();
     });
   });
 
   describe('security', () => {
-    it('handles unsafe filenames', () => {
+    it('handles unsafe filenames', (done) => {
       const fa = 'a.txt';
       const fb = 'b.txt';
       const fname = `${fa};${fb}`;
@@ -237,9 +243,10 @@ describe('proxy', () => {
       // These files are still ok
       fs.existsSync(fa).should.equal(true);
       fs.existsSync(fb).should.equal(true);
+      done();
     });
 
-    it('avoids globs', () => {
+    it('avoids globs', (done) => {
       const fa = 'a.txt';
       const fglob = '*.txt';
       shell.exec('echo hello world').to(fa);
@@ -251,14 +258,16 @@ describe('proxy', () => {
 
       // These files are still ok
       fs.existsSync(fa).should.equal(true);
+      done();
     });
 
-    it('escapes quotes', () => {
+    it('escapes quotes', (done) => {
       const fquote = 'thisHas"Quotes.txt';
       shell.exec('echo hello world').to(fquote);
       fs.existsSync(fquote).should.equal(true);
       shell[delVarName](fquote);
       fs.existsSync(fquote).should.equal(false);
+      done();
     });
   });
 });
