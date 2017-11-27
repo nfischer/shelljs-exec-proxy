@@ -28,6 +28,7 @@ $ npm install --save shelljs-exec-proxy
 ## Get that JavaScript feeling back in your code
 
 ```javascript
+const shell = require('shelljs-exec-proxy');
 shell.git.status();
 shell.git.add('.');
 shell.git.commit('-am', 'Fixed issue #1');
