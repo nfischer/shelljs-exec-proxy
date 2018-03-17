@@ -141,7 +141,9 @@ describe('proxy', () => {
         const ret2 = shell.exec(`du ${fname}`);
         assertShellStringEqual(ret1, ret2);
         // Don't assert the file size, since that may be OS dependent.
-        ret1.stdout.should.endWith(`\t${fname}${os.EOL}`);
+        // Note: newline should be '\n', because we're checking a JS string, not
+        // something from the file system.
+        ret1.stdout.should.endWith(`\t${fname}\n`);
       } else {
         console.log('skipping test');
       }
@@ -223,7 +225,9 @@ describe('proxy', () => {
     it('runs very long subcommand chains', (done) => {
       const fun = (unix() ? shell.$output : shell['%output%']);
       const ret = fun.one.two.three.four.five.six('seven');
-      ret.stdout.should.equal(`one two three four five six seven${os.EOL}`);
+      // Note: newline should be '\n', because we're checking a JS string, not
+      // something from the file system.
+      ret.stdout.should.equal('one two three four five six seven\n');
       ret.stderr.should.equal('');
       ret.code.should.equal(0);
       done();
@@ -240,6 +244,7 @@ describe('proxy', () => {
       shell.exec('echo hello world').to(fname);
 
       shell[delVarName](fname);
+      // TODO(nfischer): this line fails on Windows
       fs.existsSync(fname).should.equal(false);
       shell.cat(fa).toString().should.equal(`hello world${os.EOL}`);
 
