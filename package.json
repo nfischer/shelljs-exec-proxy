@@ -43,6 +43,7 @@
     "nyc": "^6.6.1",
     "shelljs-changelog": "^0.2.0",
     "shelljs-release": "^0.2.0",
-    "should": "^9.0.2"
+    "should": "^9.0.2",
+    "shx": "^0.2.2"
   }
 }

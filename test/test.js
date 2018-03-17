@@ -19,13 +19,7 @@ function unix() {
 }
 
 describe('proxy', () => {
-  let delVarName;
   before(() => {
-    // Configure shell variables so that we can use basic commands for testing
-    // without using the ShellJS builtin
-    shell.env.del = unix() ? 'rm' : 'del';
-    delVarName = unix() ? '$del' : '%del%';
-    shell.env.output = 'echo';
     shell.config.silent = true;
   });
 
@@ -196,7 +190,7 @@ describe('proxy', () => {
     it('handles ShellStrings as arguments', (done) => {
       shell.touch('file.txt');
       fs.existsSync('file.txt').should.equal(true);
-      shell[delVarName](shell.ShellString('file.txt'));
+      shell.shx['--noglob'].rm(shell.ShellString('file.txt'));
       // TODO(nfischer): this fails on Windows
       fs.existsSync('file.txt').should.equal(false);
       done();
@@ -223,8 +217,7 @@ describe('proxy', () => {
     });
 
     it('runs very long subcommand chains', (done) => {
-      const fun = (unix() ? shell.$output : shell['%output%']);
-      const ret = fun.one.two.three.four.five.six('seven');
+      const ret = shell.shx['--noglob'].echo.one.two.three.four.five.six('seven');
       // Note: newline should be '\n', because we're checking a JS string, not
       // something from the file system.
       ret.stdout.should.equal('one two three four five six seven\n');
@@ -243,7 +236,7 @@ describe('proxy', () => {
       shell.exec('echo hello world').to(fb);
       shell.exec('echo hello world').to(fname);
 
-      shell[delVarName](fname);
+      shell.shx['--noglob'].rm(fname);
       // TODO(nfischer): this line fails on Windows
       fs.existsSync(fname).should.equal(false);
       shell.cat(fa).toString().should.equal(`hello world${os.EOL}`);
@@ -260,7 +253,7 @@ describe('proxy', () => {
       shell.exec('echo hello world').to(fa);
       shell.exec('echo hello world').to(fglob);
 
-      shell[delVarName](fglob);
+      shell.shx['--noglob'].rm(fglob);
       // TODO(nfischer): this line fails on Windows
       fs.existsSync(fglob).should.equal(false);
       shell.cat(fa).toString().should.equal(`hello world${os.EOL}`);
@@ -275,7 +268,7 @@ describe('proxy', () => {
         const fquote = 'thisHas"Quotes.txt';
         shell.exec('echo hello world').to(fquote);
         fs.existsSync(fquote).should.equal(true);
-        shell[delVarName](fquote);
+        shell.shx['--noglob'].rm(fquote);
         fs.existsSync(fquote).should.equal(false);
         done();
       } else {
