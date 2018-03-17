@@ -217,7 +217,7 @@ describe('proxy', () => {
     });
 
     it('runs very long subcommand chains', (done) => {
-      const ret = shell.shx['--noglob'].echo.one.two.three.four.five.six('seven');
+      const ret = shell.shx.echo.one.two.three.four.five.six('seven');
       // Note: newline should be '\n', because we're checking a JS string, not
       // something from the file system.
       ret.stdout.should.equal('one two three four five six seven\n');
