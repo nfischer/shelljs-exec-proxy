@@ -19,13 +19,7 @@ function unix() {
 }
 
 describe('proxy', () => {
-  let delVarName;
   before(() => {
-    // Configure shell variables so that we can use basic commands for testing
-    // without using the ShellJS builtin
-    shell.env.del = unix() ? 'rm' : 'del';
-    delVarName = unix() ? '$del' : '%del%';
-    shell.env.output = 'echo';
     shell.config.silent = true;
   });
 
@@ -196,8 +190,8 @@ describe('proxy', () => {
     it('handles ShellStrings as arguments', (done) => {
       shell.touch('file.txt');
       fs.existsSync('file.txt').should.equal(true);
-      shell[delVarName](shell.ShellString('file.txt'));
-      // TODO(nfischer): this fails on Windows
+      shell.shx['--noglob'].rm(shell.ShellString('file.txt'));
+      // TODO(nfischer): this line (still) fails on Windows
       fs.existsSync('file.txt').should.equal(false);
       done();
     });
@@ -223,8 +217,8 @@ describe('proxy', () => {
     });
 
     it('runs very long subcommand chains', (done) => {
-      const fun = (unix() ? shell.$output : shell['%output%']);
-      const ret = fun.one.two.three.four.five.six('seven');
+      // TODO(nfischer): this returns empty string on Windows
+      const ret = shell.shx.echo.one.two.three.four.five.six('seven');
       // Note: newline should be '\n', because we're checking a JS string, not
       // something from the file system.
       ret.stdout.should.equal('one two three four five six seven\n');
@@ -242,15 +236,19 @@ describe('proxy', () => {
       shell.exec('echo hello world').to(fa);
       shell.exec('echo hello world').to(fb);
       shell.exec('echo hello world').to(fname);
+      fs.existsSync(fa).should.equal(true);
+      fs.existsSync(fb).should.equal(true);
+      fs.existsSync(fname).should.equal(true);
 
-      shell[delVarName](fname);
-      // TODO(nfischer): this line fails on Windows
-      fs.existsSync(fname).should.equal(false);
+      shell.shx['--noglob'].rm(fname);
       shell.cat(fa).toString().should.equal(`hello world${os.EOL}`);
 
       // These files are still ok
       fs.existsSync(fa).should.equal(true);
       fs.existsSync(fb).should.equal(true);
+
+      // TODO(nfischer): this line (still) fails on Windows
+      fs.existsSync(fname).should.equal(false);
       done();
     }).timeout(5000);
 
@@ -260,8 +258,7 @@ describe('proxy', () => {
       shell.exec('echo hello world').to(fa);
       shell.exec('echo hello world').to(fglob);
 
-      shell[delVarName](fglob);
-      // TODO(nfischer): this line fails on Windows
+      shell.shx['--noglob'].rm(fglob);
       fs.existsSync(fglob).should.equal(false);
       shell.cat(fa).toString().should.equal(`hello world${os.EOL}`);
 
@@ -275,7 +272,7 @@ describe('proxy', () => {
         const fquote = 'thisHas"Quotes.txt';
         shell.exec('echo hello world').to(fquote);
         fs.existsSync(fquote).should.equal(true);
-        shell[delVarName](fquote);
+        shell.shx['--noglob'].rm(fquote);
         fs.existsSync(fquote).should.equal(false);
       } else {
         // Windows doesn't support `"` as a character in a filename, see
