@@ -191,7 +191,7 @@ describe('proxy', () => {
       shell.touch('file.txt');
       fs.existsSync('file.txt').should.equal(true);
       shell.shx['--noglob'].rm(shell.ShellString('file.txt'));
-      // TODO(nfischer): this fails on Windows
+      // TODO(nfischer): this line (still) fails on Windows
       fs.existsSync('file.txt').should.equal(false);
       done();
     });
@@ -217,6 +217,7 @@ describe('proxy', () => {
     });
 
     it('runs very long subcommand chains', (done) => {
+      // TODO(nfischer): this returns empty string on Windows
       const ret = shell.shx.echo.one.two.three.four.five.six('seven');
       // Note: newline should be '\n', because we're checking a JS string, not
       // something from the file system.
@@ -235,9 +236,12 @@ describe('proxy', () => {
       shell.exec('echo hello world').to(fa);
       shell.exec('echo hello world').to(fb);
       shell.exec('echo hello world').to(fname);
+      fs.existsSync(fa).should.equal(true);
+      fs.existsSync(fb).should.equal(true);
+      fs.existsSync(fname).should.equal(true);
 
       shell.shx['--noglob'].rm(fname);
-      // TODO(nfischer): this line fails on Windows
+      // TODO(nfischer): this line (still) fails on Windows
       fs.existsSync(fname).should.equal(false);
       shell.cat(fa).toString().should.equal(`hello world${os.EOL}`);
 
@@ -254,7 +258,6 @@ describe('proxy', () => {
       shell.exec('echo hello world').to(fglob);
 
       shell.shx['--noglob'].rm(fglob);
-      // TODO(nfischer): this line fails on Windows
       fs.existsSync(fglob).should.equal(false);
       shell.cat(fa).toString().should.equal(`hello world${os.EOL}`);
 
