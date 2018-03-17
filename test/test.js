@@ -266,12 +266,18 @@ describe('proxy', () => {
     });
 
     it('escapes quotes', (done) => {
-      const fquote = 'thisHas"Quotes.txt';
-      shell.exec('echo hello world').to(fquote);
-      fs.existsSync(fquote).should.equal(true);
-      shell[delVarName](fquote);
-      fs.existsSync(fquote).should.equal(false);
-      done();
+      if (unix()) {
+        const fquote = 'thisHas"Quotes.txt';
+        shell.exec('echo hello world').to(fquote);
+        fs.existsSync(fquote).should.equal(true);
+        shell[delVarName](fquote);
+        fs.existsSync(fquote).should.equal(false);
+        done();
+      } else {
+        // Windows doesn't support `"` as a character in a filename, see
+        // https://msdn.microsoft.com/en-us/library/windows/desktop/aa365247(v=vs.85).aspx
+        console.log('skipping test');
+      }
     });
   });
 });
