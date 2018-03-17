@@ -3,6 +3,7 @@ const shell = require('../index');
 const origShell = require('shelljs');
 const assert = require('assert');
 const fs = require('fs');
+const os = require('os');
 const cmdArrayAttr = require('../common').cmdArrayAttr;
 require('should');
 
@@ -139,7 +140,8 @@ describe('proxy', () => {
         const ret1 = shell.du(fname);
         const ret2 = shell.exec(`du ${fname}`);
         assertShellStringEqual(ret1, ret2);
-        ret1.stdout.should.equal(`0\t${fname}\n`);
+        // Don't assert the file size, since that may be OS dependent.
+        ret1.stdout.should.endWith(`\t${fname}${os.EOL}`);
       } else {
         console.log('skipping test');
       }
@@ -193,6 +195,7 @@ describe('proxy', () => {
       shell.touch('file.txt');
       fs.existsSync('file.txt').should.equal(true);
       shell[delVarName](shell.ShellString('file.txt'));
+      // TODO(nfischer): this fails on Windows
       fs.existsSync('file.txt').should.equal(false);
       done();
     });
@@ -218,9 +221,9 @@ describe('proxy', () => {
     });
 
     it('runs very long subcommand chains', (done) => {
-      const fun = (unix() ? shell.$output : shell['%output']);
+      const fun = (unix() ? shell.$output : shell['%output%']);
       const ret = fun.one.two.three.four.five.six('seven');
-      ret.stdout.should.equal('one two three four five six seven\n');
+      ret.stdout.should.equal(`one two three four five six seven${os.EOL}`);
       ret.stderr.should.equal('');
       ret.code.should.equal(0);
       done();
@@ -238,7 +241,7 @@ describe('proxy', () => {
 
       shell[delVarName](fname);
       fs.existsSync(fname).should.equal(false);
-      shell.cat(fa).toString().should.equal('hello world\n');
+      shell.cat(fa).toString().should.equal(`hello world${os.EOL}`);
 
       // These files are still ok
       fs.existsSync(fa).should.equal(true);
@@ -253,8 +256,9 @@ describe('proxy', () => {
       shell.exec('echo hello world').to(fglob);
 
       shell[delVarName](fglob);
+      // TODO(nfischer): this line fails on Windows
       fs.existsSync(fglob).should.equal(false);
-      shell.cat(fa).toString().should.equal('hello world\n');
+      shell.cat(fa).toString().should.equal(`hello world${os.EOL}`);
 
       // These files are still ok
       fs.existsSync(fa).should.equal(true);
