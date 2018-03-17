@@ -245,7 +245,7 @@ describe('proxy', () => {
       fs.existsSync(fa).should.equal(true);
       fs.existsSync(fb).should.equal(true);
       done();
-    });
+    }).timeout(5000);
 
     it('avoids globs', (done) => {
       const fa = 'a.txt';
@@ -261,7 +261,7 @@ describe('proxy', () => {
       // These files are still ok
       fs.existsSync(fa).should.equal(true);
       done();
-    });
+    }).timeout(5000);
 
     it('escapes quotes', (done) => {
       if (unix()) {
@@ -270,12 +270,12 @@ describe('proxy', () => {
         fs.existsSync(fquote).should.equal(true);
         shell.shx['--noglob'].rm(fquote);
         fs.existsSync(fquote).should.equal(false);
-        done();
       } else {
         // Windows doesn't support `"` as a character in a filename, see
         // https://msdn.microsoft.com/en-us/library/windows/desktop/aa365247(v=vs.85).aspx
         console.log('skipping test');
       }
+      done();
     });
   });
 });
