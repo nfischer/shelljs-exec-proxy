@@ -241,13 +241,14 @@ describe('proxy', () => {
       fs.existsSync(fname).should.equal(true);
 
       shell.shx['--noglob'].rm(fname);
-      // TODO(nfischer): this line (still) fails on Windows
-      fs.existsSync(fname).should.equal(false);
       shell.cat(fa).toString().should.equal(`hello world${os.EOL}`);
 
       // These files are still ok
       fs.existsSync(fa).should.equal(true);
       fs.existsSync(fb).should.equal(true);
+
+      // TODO(nfischer): this line (still) fails on Windows
+      fs.existsSync(fname).should.equal(false);
       done();
     }).timeout(5000);
 
