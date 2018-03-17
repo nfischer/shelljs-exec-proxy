@@ -252,7 +252,7 @@ describe('proxy', () => {
       fs.existsSync(fa).should.equal(true);
       fs.existsSync(fb).should.equal(true);
       done();
-    });
+    }).timeout(5000);
 
     it('avoids globs', (done) => {
       const fa = 'a.txt';
@@ -268,7 +268,7 @@ describe('proxy', () => {
       // These files are still ok
       fs.existsSync(fa).should.equal(true);
       done();
-    });
+    }).timeout(5000);
 
     it('escapes quotes', (done) => {
       if (unix()) {
