@@ -1,10 +1,10 @@
 /* globals describe, it, before, afterEach */
-const shell = require('../index');
 const origShell = require('shelljs');
 const assert = require('assert');
 const fs = require('fs');
 const os = require('os');
-const cmdArrayAttr = require('../common').cmdArrayAttr;
+const shell = require('../index');
+const { cmdArrayAttr } = require('../common');
 require('should');
 
 function assertShellStringEqual(a, b) {
@@ -40,18 +40,20 @@ describe('proxy', () => {
     const oldInspect = shell.inspect;
     shell.inspect = () => 'foo';
     shell.inspect().should.equal('foo');
-    if ('inspect' in shell)
+    if ('inspect' in shell) {
       shell.inspect = oldInspect;
-    else
+    } else {
       delete shell.inspect;
+    }
 
     const oldValueOf = shell.valueOf;
     shell.valueOf = () => 'bar';
     shell.valueOf().should.equal('bar');
-    if ('valueOf' in shell)
+    if ('valueOf' in shell) {
       shell.valueOf = oldValueOf;
-    else
+    } else {
       delete shell.valueOf;
+    }
   });
 
   it('returns appropriate keys', () => {
@@ -89,11 +91,11 @@ describe('proxy', () => {
   });
 
   it('allows adding new attributes', () => {
-    shell.hasOwnProperty('version').should.equal(false);
+    Object.prototype.hasOwnProperty.call(shell, 'version').should.equal(false);
     shell.version = 'Proxy';
     shell.version.should.equal('Proxy');
     delete shell.version;
-    shell.hasOwnProperty('version').should.equal(false);
+    Object.prototype.hasOwnProperty.call(shell, 'version').should.equal(false);
   });
 
   describe('commands', () => {
