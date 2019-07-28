@@ -38,8 +38,9 @@ shell.git.push('origin', 'master');
 
 ## Security improvements
 
-ShellJS v0.7 is vulnerable to command injection, unexpected wildcards, and
-string escaping mistakes. Here's an insecure code snippet:
+Current versions of ShellJS export the `.exec()` method, which if not used
+carefully, could introduce command injection Vulnerabilities to your module.
+Here's an insecure code snippet:
 
 ```javascript
 shell.ls('dir/*.txt').forEach(file => {
@@ -49,7 +50,7 @@ shell.ls('dir/*.txt').forEach(file => {
 
 This leaves you vulnerable to files like:
 
-| Example file name | Vulnerability |
+| Example file name | Unintended behavior |
 |------------------ | ------------- |
 | `File 1.txt` | This tries to add both `File` and `1.txt`, instead of `File 1.txt` |
 | `foo;rm -rf *` | This executes both `git add foo` and `rm -rf *`, unexpectedly deleting your files! |
@@ -63,8 +64,8 @@ shell.ls('dir/*.txt').forEach(file => {
 }
 ```
 
-| Example file name | Security fix |
+| Example file name | Behavior |
 |------------------ | ------------ |
-| `File 1.txt` | Filenames are automatically quoted, so spaces aren't an issue |
+| `File 1.txt` | Arguments are automatically quoted, so spaces aren't an issue |
 | `foo;rm -rf *` | Only one command runs at a time (semicolons are treated literally) and wildcards aren't expanded |
 | `ThisHas"quotes'.txt` | Quote characters are automatically escaped for you, so there are never any issues |
