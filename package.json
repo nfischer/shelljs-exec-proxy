@@ -8,6 +8,7 @@
     "test": "nyc --reporter=text --reporter=lcov mocha",
     "lint": "eslint .",
     "changelog": "shelljs-changelog",
+    "codecov": "codecov",
     "release:major": "shelljs-release major",
     "release:minor": "shelljs-release minor",
     "release:patch": "shelljs-release patch"
@@ -36,6 +37,7 @@
     "common.js"
   ],
   "devDependencies": {
+    "codecov": "^3.8.1",
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.17.3",

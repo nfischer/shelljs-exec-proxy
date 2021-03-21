@@ -196,6 +196,12 @@ describe('proxy', () => {
     });
 
     it('handles ShellStrings as arguments', (done) => {
+      if (!unix()) {
+        // See the TODO below.
+        console.log('Skipping unix-only test case');
+        done();
+        return;
+      }
       shell.touch('file.txt');
       fs.existsSync('file.txt').should.equal(true);
       shell[delVarName](shell.ShellString('file.txt'));
@@ -238,6 +244,12 @@ describe('proxy', () => {
 
   describe('security', () => {
     it('handles unsafe filenames', (done) => {
+      if (!unix()) {
+        // See the TODO below.
+        console.log('Skipping unix-only test case');
+        done();
+        return;
+      }
       const fa = 'a.txt';
       const fb = 'b.txt';
       const fname = `${fa};${fb}`;
@@ -257,6 +269,12 @@ describe('proxy', () => {
     }).timeout(5000);
 
     it('avoids globs', (done) => {
+      if (!unix()) {
+        // See the TODO below.
+        console.log('Skipping unix-only test case');
+        done();
+        return;
+      }
       const fa = 'a.txt';
       const fglob = '*.txt';
       shell.exec('echo hello world').to(fa);
@@ -273,17 +291,19 @@ describe('proxy', () => {
     }).timeout(5000);
 
     it('escapes quotes', (done) => {
-      if (unix()) {
-        const fquote = 'thisHas"Quotes.txt';
-        shell.exec('echo hello world').to(fquote);
-        fs.existsSync(fquote).should.equal(true);
-        shell[delVarName](fquote);
-        fs.existsSync(fquote).should.equal(false);
-      } else {
+      if (!unix()) {
         // Windows doesn't support `"` as a character in a filename, see
         // https://msdn.microsoft.com/en-us/library/windows/desktop/aa365247(v=vs.85).aspx
-        console.log('skipping test');
+        console.log('Skipping unix-only test case');
+        done();
+        return;
       }
+
+      const fquote = 'thisHas"Quotes.txt';
+      shell.exec('echo hello world').to(fquote);
+      fs.existsSync(fquote).should.equal(true);
+      shell[delVarName](fquote);
+      fs.existsSync(fquote).should.equal(false);
       done();
     });
   });
