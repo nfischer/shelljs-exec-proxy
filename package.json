@@ -1,6 +1,6 @@
 {
   "name": "shelljs-exec-proxy",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Unlimited shelljs commands with ES6 proxies",
   "main": "index.js",
   "scripts": {
