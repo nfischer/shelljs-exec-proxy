@@ -9,17 +9,19 @@ version: '{build}'
 # Install scripts. (runs after repo cloning)
 install:
   - ps: Install-Product node $env:nodejs_version
-  - npm -g install npm@latest
   - set PATH=%APPDATA%\npm;%PATH%
   - node --version
   - npm --version
   - npm install
 
 matrix:
-  fast_finish: true
+  fast_finish: false
 
 # No need for MSBuild on this project
 build: off
 
 test_script:
   - npm test
+
+on_success:
+  - npm run codecov -- -f coverage/lcov.info
