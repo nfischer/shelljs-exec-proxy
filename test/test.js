@@ -233,9 +233,8 @@ describe('proxy', () => {
     it('runs very long subcommand chains', (done) => {
       const fun = (unix() ? shell.$output : shell['%output%']);
       const ret = fun.one.two.three.four.five.six('seven');
-      // Note: newline should be '\n', because we're checking a JS string, not
-      // something from the file system.
-      ret.stdout.should.equal('one two three four five six seven\n');
+      const newline = (unix() ? '\n' : '\r\n');
+      ret.stdout.should.equal(`one two three four five six seven${newline}`);
       ret.stderr.should.equal('');
       ret.code.should.equal(0);
       done();
