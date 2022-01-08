@@ -30,7 +30,7 @@
     "url": "git://github.com/nfischer/shelljs-exec-proxy.git"
   },
   "dependencies": {
-    "shelljs": "^0.8.4"
+    "shelljs": "^0.8.5"
   },
   "files": [
     "index.js",
@@ -43,8 +43,8 @@
     "eslint-plugin-import": "^2.17.3",
     "mocha": "^6.1.4",
     "nyc": "^14.1.1",
-    "shelljs-changelog": "^0.2.0",
-    "shelljs-release": "^0.4.1",
+    "shelljs-changelog": "^0.2.6",
+    "shelljs-release": "^0.5.1",
     "should": "^13.2.3"
   }
 }
