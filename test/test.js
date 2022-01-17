@@ -18,8 +18,10 @@ function unix() {
   return process.platform !== 'win32';
 }
 
-describe('proxy', () => {
+describe('proxy', function describeproxy() {
+  this.timeout(5000); // shell.exec() is slow
   let delVarName;
+
   before(() => {
     // Configure shell variables so that we can use basic commands for testing
     // without using the ShellJS builtin
@@ -265,7 +267,7 @@ describe('proxy', () => {
       fs.existsSync(fa).should.equal(true);
       fs.existsSync(fb).should.equal(true);
       done();
-    }).timeout(5000);
+    });
 
     it('avoids globs', (done) => {
       if (!unix()) {
@@ -287,7 +289,7 @@ describe('proxy', () => {
       // These files are still ok
       fs.existsSync(fa).should.equal(true);
       done();
-    }).timeout(5000);
+    });
 
     it('escapes quotes', (done) => {
       if (!unix()) {
