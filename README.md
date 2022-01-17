@@ -1,6 +1,6 @@
 # ShellJS Exec Proxy
 
-[![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Fnfischer%2Fshelljs-exec-proxy%2Fbadge%3Fref%3Dmaster&style=flat-square)](https://actions-badge.atrox.dev/nfischer/shelljs-exec-proxy/goto?ref=master)
+[![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Fnfischer%2Fshelljs-exec-proxy%2Fbadge%3Fref%3Dmain&style=flat-square)](https://actions-badge.atrox.dev/nfischer/shelljs-exec-proxy/goto?ref=main)
 [![Codecov](https://img.shields.io/codecov/c/github/nfischer/shelljs-exec-proxy.svg?style=flat-square)](https://codecov.io/gh/nfischer/shelljs-exec-proxy)
 [![npm](https://img.shields.io/npm/v/shelljs-exec-proxy.svg?style=flat-square)](https://www.npmjs.com/package/shelljs-exec-proxy)
 [![npm downloads](https://img.shields.io/npm/dm/shelljs-exec-proxy.svg?style=flat-square)](https://www.npmjs.com/package/shelljs-exec-proxy)
@@ -33,7 +33,7 @@ const shell = require('shelljs-exec-proxy');
 shell.git.status();
 shell.git.add('.');
 shell.git.commit('-am', 'Fixed issue #1');
-shell.git.push('origin', 'master');
+shell.git.push('origin', 'main');
 ```
 
 ## Security improvements
