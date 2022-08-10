@@ -7,7 +7,7 @@ const proxyifyCmd = (t, ...cmdStart) => {
     // Wrap all the arguments in quotes
     const newArgs = cmdStart
       .concat(args)
-      .map(x => JSON.stringify(x));
+      .map((x) => JSON.stringify(x));
     // Run this command in the shell
     return origShell.exec.call(this.stdout, newArgs.join(' '));
   };
@@ -35,7 +35,7 @@ const proxyifyCmd = (t, ...cmdStart) => {
 
     // Always defer to `target`
     has: (target, methodName) => (methodName in target),
-    ownKeys: target => Object.keys(target),
+    ownKeys: (target) => Object.keys(target),
 
     // Prefer the existing attribute, otherwise return another Proxy
     get: (target, methodName) => {
