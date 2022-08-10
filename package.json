@@ -37,12 +37,12 @@
   ],
   "devDependencies": {
     "eslint": "^5.16.0",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.17.3",
-    "mocha": "^6.1.4",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.26.0",
+    "mocha": "^6.2.3",
     "nyc": "^14.1.1",
     "shelljs-changelog": "^0.2.6",
-    "shelljs-release": "^0.5.1",
+    "shelljs-release": "^0.5.2",
     "should": "^13.2.3"
   }
 }
