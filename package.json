@@ -22,7 +22,7 @@
   "author": "Nate Fischer <ntfschr@gmail.com> (https://github.com/nfischer)",
   "license": "MIT",
   "engines": {
-    "node": ">=6.0.0"
+    "node": ">=6"
   },
   "repository": {
     "type": "git",
