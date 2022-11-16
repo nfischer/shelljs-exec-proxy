@@ -19,7 +19,7 @@ function unix() {
 }
 
 describe('proxy', function describeproxy() {
-  this.timeout(5000); // shell.exec() is slow
+  this.timeout(10000); // shell.exec() is slow
   let delVarName;
 
   before(() => {
