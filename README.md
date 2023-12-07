@@ -1,6 +1,6 @@
 # ShellJS Exec Proxy
 
-[![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Fnfischer%2Fshelljs-exec-proxy%2Fbadge%3Fref%3Dmain&style=flat-square)](https://actions-badge.atrox.dev/nfischer/shelljs-exec-proxy/goto?ref=main)
+[![GitHub Actions](https://img.shields.io/github/actions/workflow/status/nfischer/shelljs-exec-proxy/main.yml?style=flat-square&logo=github)](https://github.com/nfischer/shelljs-exec-proxy/actions/workflows/main.yml)
 [![Codecov](https://img.shields.io/codecov/c/github/nfischer/shelljs-exec-proxy.svg?style=flat-square)](https://codecov.io/gh/nfischer/shelljs-exec-proxy)
 [![npm](https://img.shields.io/npm/v/shelljs-exec-proxy.svg?style=flat-square)](https://www.npmjs.com/package/shelljs-exec-proxy)
 [![npm downloads](https://img.shields.io/npm/dm/shelljs-exec-proxy.svg?style=flat-square)](https://www.npmjs.com/package/shelljs-exec-proxy)
