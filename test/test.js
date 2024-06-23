@@ -235,8 +235,7 @@ describe('proxy', function describeproxy() {
     it('runs very long subcommand chains', (done) => {
       const fun = (unix() ? shell.$output : shell['%output%']);
       const ret = fun.one.two.three.four.five.six('seven');
-      const newline = (unix() ? '\n' : '\r\n');
-      ret.stdout.should.equal(`one two three four five six seven${newline}`);
+      ret.stdout.should.equal('one two three four five six seven\n');
       ret.stderr.should.equal('');
       ret.code.should.equal(0);
       done();
