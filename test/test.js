@@ -1,4 +1,4 @@
-/* globals describe, it, before, afterEach */
+/* globals describe, it, before, beforeEach, afterEach */
 const origShell = require('shelljs');
 const assert = require('assert');
 const fs = require('fs');
@@ -31,8 +31,14 @@ describe('proxy', function describeproxy() {
     shell.config.silent = true;
   });
 
+  beforeEach(() => {
+    shell.mkdir('-p', 'test_data');
+    shell.cd('test_data');
+  });
+
   afterEach(() => {
-    shell.rm('-f', '*.txt');
+    shell.cd('..');
+    shell.rm('-rf', 'test_data');
   });
 
   it('appropriately handles inspect() and valueOf()', () => {
@@ -222,10 +228,10 @@ describe('proxy', function describeproxy() {
     });
 
     it('can use subcommands with options', (done) => {
-      fs.existsSync('package.json').should.equal(true);
+      fs.existsSync('../package.json').should.equal(true);
 
       // dont' actually remove this file, but do a dry run
-      const ret = shell.git.rm('-qrnf', 'package.json');
+      const ret = shell.git.rm('-qrnf', '../package.json');
       ret.code.should.equal(0);
       ret.stdout.should.equal('');
       ret.stderr.should.equal('');
