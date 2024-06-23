@@ -5,6 +5,10 @@ const fs = require('fs');
 const os = require('os');
 const shell = require('../index');
 const { cmdArrayAttr } = require('../common');
+
+/* eslint-disable no-underscore-dangle */
+// Disable lint rule for '__native'.
+
 require('should');
 
 function assertShellStringEqual(a, b) {
@@ -20,14 +24,8 @@ function unix() {
 
 describe('proxy', function describeproxy() {
   this.timeout(10000); // shell.exec() is slow
-  let delVarName;
 
   before(() => {
-    // Configure shell variables so that we can use basic commands for testing
-    // without using the ShellJS builtin
-    shell.env.del = unix() ? 'rm' : 'del';
-    delVarName = unix() ? '$del' : '%del%';
-    shell.env.output = 'echo';
     shell.config.silent = true;
   });
 
@@ -107,20 +105,6 @@ describe('proxy', function describeproxy() {
   });
 
   describe('commands', () => {
-    it.skip('runs tr', () => {
-      if (shell.which('tr')) {
-        shell.ShellString('hello world').to('file.txt');
-        const ret1 = shell.cat('file.txt').tr('-d', 'l');
-        const ret2 = shell.cat('file.txt').exec('tr -d "l"');
-        assertShellStringEqual(ret1, ret2);
-        ret2.stdout.should.equal('heo word');
-        ret2.stderr.should.equal('');
-        ret2.code.should.equal(0);
-      } else {
-        console.log('skipping test');
-      }
-    });
-
     it('runs whoami', () => {
       if (shell.which('whoami')) {
         const ret1 = shell.whoami();
@@ -212,7 +196,11 @@ describe('proxy', function describeproxy() {
       }
       shell.touch('file.txt');
       fs.existsSync('file.txt').should.equal(true);
-      shell[delVarName](shell.ShellString('file.txt'));
+      if (unix()) {
+        shell.__native.rm(shell.ShellString('file.txt'));
+      } else {
+        shell.del(shell.ShellString('file.txt'));
+      }
       // TODO(nfischer): this fails on Windows
       fs.existsSync('file.txt').should.equal(false);
       done();
@@ -230,7 +218,7 @@ describe('proxy', function describeproxy() {
     it('can use subcommands with options', (done) => {
       fs.existsSync('../package.json').should.equal(true);
 
-      // dont' actually remove this file, but do a dry run
+      // don't actually remove this file, but do a dry run
       const ret = shell.git.rm('-qrnf', '../package.json');
       ret.code.should.equal(0);
       ret.stdout.should.equal('');
@@ -239,8 +227,7 @@ describe('proxy', function describeproxy() {
     });
 
     it('runs very long subcommand chains', (done) => {
-      const fun = (unix() ? shell.$output : shell['%output%']);
-      const ret = fun.one.two.three.four.five.six('seven');
+      const ret = shell.__native.echo.one.two.three.four.five.six('seven');
       ret.stdout.should.equal('one two three four five six seven\n');
       ret.stderr.should.equal('');
       ret.code.should.equal(0);
@@ -263,7 +250,16 @@ describe('proxy', function describeproxy() {
       shell.exec('echo hello world').to(fb);
       shell.exec('echo hello world').to(fname);
 
-      shell[delVarName](fname);
+      // All three files should exist at this point.
+      fs.existsSync(fname).should.equal(true);
+      fs.existsSync(fa).should.equal(true);
+      fs.existsSync(fb).should.equal(true);
+
+      if (unix()) {
+        shell.__native.rm(fname);
+      } else {
+        shell.del(fname);
+      }
       // TODO(nfischer): this line fails on Windows
       fs.existsSync(fname).should.equal(false);
       shell.cat(fa).toString().should.equal(`hello world${os.EOL}`);
@@ -286,7 +282,11 @@ describe('proxy', function describeproxy() {
       shell.exec('echo hello world').to(fa);
       shell.exec('echo hello world').to(fglob);
 
-      shell[delVarName](fglob);
+      if (unix()) {
+        shell.__native.rm(fglob);
+      } else {
+        shell.del(fglob);
+      }
       // TODO(nfischer): this line fails on Windows
       fs.existsSync(fglob).should.equal(false);
       shell.cat(fa).toString().should.equal(`hello world${os.EOL}`);
@@ -308,7 +308,11 @@ describe('proxy', function describeproxy() {
       const fquote = 'thisHas"Quotes.txt';
       shell.exec('echo hello world').to(fquote);
       fs.existsSync(fquote).should.equal(true);
-      shell[delVarName](fquote);
+      if (unix()) {
+        shell.__native.rm(fquote);
+      } else {
+        shell.del(fquote);
+      }
       fs.existsSync(fquote).should.equal(false);
       done();
     });

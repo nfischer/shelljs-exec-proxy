@@ -66,4 +66,12 @@ const proxyifyCmd = (t, ...cmdStart) => {
 // origShell.ShellString = ShellStringProxy;
 
 // export the modified shell
-module.exports = proxyifyCmd(origShell);
+const proxifiedShell = proxyifyCmd(origShell);
+
+// Allow access to native commands, bypassing ShellJS builtins. Useful for
+// testing, but most usecases should prefer calling the proxifiedShell directly
+// which prefers ShellJS builtins when available. Store this under an unusual
+// name to limit the risk of name conflicts with real commands.
+// eslint-disable-next-line no-underscore-dangle
+proxifiedShell.__native = proxyifyCmd({});
+module.exports = proxifiedShell;
