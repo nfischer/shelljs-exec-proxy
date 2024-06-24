@@ -271,12 +271,6 @@ describe('proxy', function describeproxy() {
     });
 
     it('avoids globs', (done) => {
-      if (!unix()) {
-        // See the TODO below.
-        console.log('Skipping unix-only test case');
-        done();
-        return;
-      }
       const fa = 'a.txt';
       const fglob = '*.txt';
       shell.exec('echo hello world').to(fa);
@@ -287,7 +281,6 @@ describe('proxy', function describeproxy() {
       } else {
         shell.del(fglob);
       }
-      // TODO(nfischer): this line fails on Windows
       fs.existsSync(fglob).should.equal(false);
       shell.cat(fa).toString().should.equal(`hello world${os.EOL}`);
 
