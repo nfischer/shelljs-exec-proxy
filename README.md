@@ -20,8 +20,6 @@ shell.git.commit('-am', `I'm updating the "foo" module to be more secure`);
 
 ## Installation
 
-**Important:** This is only available for Node v6+ (it requires ES6 Proxies!)
-
 ```
 $ npm install --save shelljs-exec-proxy
 ```
