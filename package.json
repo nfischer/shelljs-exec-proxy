@@ -26,20 +26,20 @@
     "url": "git://github.com/nfischer/shelljs-exec-proxy.git"
   },
   "dependencies": {
-    "shelljs": "^0.8.5"
+    "shelljs": "^0.9.2"
   },
   "files": [
     "index.js",
     "common.js"
   ],
   "devDependencies": {
-    "eslint": "^5.16.0",
-    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint": "^8.57.1",
+    "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0",
-    "mocha": "^6.2.3",
-    "nyc": "^14.1.1",
+    "mocha": "^11.1.0",
+    "nyc": "^17.1.0",
     "shelljs-changelog": "^0.2.6",
-    "shelljs-release": "^0.5.2",
+    "shelljs-release": "^0.5.3",
     "should": "^13.2.3"
   },
   "engines": {
