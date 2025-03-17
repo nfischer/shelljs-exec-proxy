@@ -21,9 +21,6 @@
   ],
   "author": "Nate Fischer <ntfschr@gmail.com> (https://github.com/nfischer)",
   "license": "MIT",
-  "engines": {
-    "node": ">=6"
-  },
   "repository": {
     "type": "git",
     "url": "git://github.com/nfischer/shelljs-exec-proxy.git"
@@ -44,5 +41,8 @@
     "shelljs-changelog": "^0.2.6",
     "shelljs-release": "^0.5.2",
     "should": "^13.2.3"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }
