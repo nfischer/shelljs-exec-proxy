@@ -4,10 +4,14 @@ const { cmdArrayAttr } = require('./common');
 const proxyifyCmd = (t, ...cmdStart) => {
   // Create the target (or use the one passed in)
   t = t || function _t(...args) {
-    // Wrap all the arguments in quotes
-    const newArgs = cmdStart
+    let newArgs = [];
+    // The first segment of the command should not be wrapped in quotes
+    newArgs.push(cmdStart[0]);
+
+    // Wrap all subsequent arguments in quotes
+    newArgs = newArgs.concat(cmdStart.slice(1)
       .concat(args)
-      .map((x) => JSON.stringify(x));
+      .map((x) => JSON.stringify(x)));
     // Run this command in the shell
     return origShell.exec.call(this.stdout, newArgs.join(' '));
   };
