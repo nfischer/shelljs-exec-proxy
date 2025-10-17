@@ -9,11 +9,20 @@ const proxyifyCmd = (t, ...cmdStart) => {
     newArgs.push(cmdStart[0]);
 
     // Wrap all subsequent arguments in quotes
-    newArgs = newArgs.concat(cmdStart.slice(1)
-      .concat(args)
-      .map((x) => JSON.stringify(x)));
-    // Run this command in the shell
-    return origShell.exec.call(this.stdout, newArgs.join(' '));
+    newArgs = newArgs
+      .concat(cmdStart.slice(1))
+      .concat(args);
+    // Run this command in the shell with globbing temporarily disabled.
+    // 'noglob' is part of ShellJS internals, but hopefully this will stay
+    // around. We cannot achieve the same with `set('-f')` because we need to
+    // know the previous state in order to reset globbing back the way it was.
+    const oldGlob = origShell.config.noglob;
+    try {
+      origShell.config.noglob = true;
+      return origShell.cmd.call(this.stdout, newArgs);
+    } finally {
+      origShell.config.noglob = oldGlob;
+    }
   };
   // Store the list of commands, in case we have a subcommand chain
   t[cmdArrayAttr] = cmdStart;

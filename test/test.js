@@ -289,6 +289,26 @@ describe('proxy', function describeproxy() {
       done();
     });
 
+    it('other shelljs commands can still glob', (done) => {
+      const fa = 'a.txt';
+      const fglob = '*.txt';
+      shell.exec('echo hello world').to(fa);
+      shell.exec('echo hello world').to(fglob);
+
+      if (unix()) {
+        shell.__native.rm(fglob);
+      } else {
+        shell.del(fglob);
+      }
+      fs.existsSync(fglob).should.equal(false);
+      fs.existsSync(fa).should.equal(true);
+
+      shell.rm('*.txt');
+      fs.existsSync(fglob).should.equal(false);
+      fs.existsSync(fa).should.equal(false);
+      done();
+    });
+
     it('escapes quotes', (done) => {
       if (!unix()) {
         // Windows doesn't support `"` as a character in a filename, see
