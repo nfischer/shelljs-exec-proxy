@@ -6,10 +6,9 @@ const proxyifyCmd = (t, ...cmdStart) => {
   t = t || function _t(...args) {
     // Wrap all the arguments in quotes
     const newArgs = cmdStart
-      .concat(args)
-      .map((x) => JSON.stringify(x));
+      .concat(args);
     // Run this command in the shell
-    return origShell.exec.call(this.stdout, newArgs.join(' '));
+    return origShell.cmd(...newArgs);
   };
   // Store the list of commands, in case we have a subcommand chain
   t[cmdArrayAttr] = cmdStart;
